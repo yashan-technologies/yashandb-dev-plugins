@@ -77,6 +77,9 @@ GORM ORM 使用指南 - 使用 GORM 框架操作 YashanDB。
 ### /yashandb-python
 Python 驱动开发环境搭建 - 使用 Python 连接 YashanDB，包括 yaspy 和 yasdb 驱动。
 
+### /yashandb-sqlalchemy
+SQLAlchemy 使用指南 - 使用 SQLAlchemy ORM 框架操作 YashanDB。
+
 ### /yashandb-jdbc
 Java JDBC 开发环境搭建 - 使用 Java JDBC 连接 YashanDB。
 
@@ -94,10 +97,10 @@ Docker 安装 - 在 Windows、Linux（Ubuntu/Debian/CentOS/Fedora）或 macOS �
 ```
 /yashandb-gorm ──► /yashandb-go ──┐
                             ├──► /yashandb-c
-/yashandb-python ──────────────┘
+/yashandb-sqlalchemy ──► /yashandb-python ──┘
 ```
 
-Go 和 Python 驱动都依赖 C 驱动，GORM 依赖 Go 驱动。请先安装 `/yashandb-c`。
+Go 和 Python 驱动都依赖 C 驱动，GORM 依赖 Go 驱动，SQLAlchemy 依赖 yaspy 驱动。请先安装 `/yashandb-c`。
 
 ## 快速开始
 
@@ -107,6 +110,7 @@ Go 和 Python 驱动都依赖 C 驱动，GORM 依赖 Go 驱动。请先安装 `/
 /yashandb-go      # 搭建 Go 开发环境
 /yashandb-gorm    # 使用 GORM ORM
 /yashandb-python  # 搭建 Python 开发环境
+/yashandb-sqlalchemy # 使用 SQLAlchemy ORM
 /yashandb-jdbc    # 搭建 Java 开发环境
 /yashandb-docker  # 部署 Docker 容器
 /docker-installer # 安装 Docker（如未安装）
