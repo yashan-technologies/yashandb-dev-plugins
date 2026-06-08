@@ -1,4 +1,4 @@
-# YashanDB JDBC 驱动测试脚本 (Windows PowerShell)
+﻿# YashanDB JDBC 驱动测试脚本 (Windows PowerShell)
 
 $ErrorActionPreference = "Continue"
 $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -32,7 +32,7 @@ function Test-JavacInstalled {
         Write-Success "Java 编译器已安装: $version"
         return $true
     } else {
-        Write-Warning "Java 编译器 (javac) 未安装"
+        Write-WarningMsg "Java 编译器 (javac) 未安装"
         return $false
     }
 }
@@ -50,7 +50,7 @@ function Test-BuildTool {
         Write-Success "Gradle 已安装: $version"
         return $true
     } else {
-        Write-Warning "Maven 和 Gradle 都未安装"
+        Write-WarningMsg "Maven 和 Gradle 都未安装"
         return $false
     }
 }
@@ -74,14 +74,14 @@ Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "测试摘要" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "通过: $passed"
-Write-Host "失败: $failed"
+Write-Host "passed: $passed"
+Write-Host "failed: $failed"
 Write-Host ""
 
 if ($failed -eq 0) {
     Write-Success "所有测试通过！"
     exit 0
 } else {
-    Write-Warning "部分测试失败"
+    Write-WarningMsg "部分测试失败"
     exit 1
 }

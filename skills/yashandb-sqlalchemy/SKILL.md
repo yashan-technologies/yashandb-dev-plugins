@@ -9,26 +9,28 @@ description: 指导用户使用 SQLAlchemy 连接 YashanDB。当用户提到 SQL
 ## 依赖关系
 
 ```
-SQLAlchemy 1.4.x + yashandb-sqlalchemy + yaspy + YashanDB
-    │
-    └──► yaspy 驱动 (yashandb-python)
-              │
-              └──► C 驱动 (libyascli) ← 执行 /yashandb-c 安装
+SQLAlchemy 2.0.50 (建议采用)
+       │
+       └──► yashandb-sqlalchemy 2.0.0
+                    │
+                    └──► yaspy >=1.2.1
+                              │
+                              └──► C 驱动 (libyascli) ← 执行 /yashandb-c 安装
 ```
 
 ## 版本要求
 
 | 组件 | 版本要求 | 说明 |
 |------|----------|------|
-| **SQLAlchemy** | 1.4.* | 兼容 1.4.5 版本 |
-| **yashandb-sqlalchemy** | 最新版 | YashanDB 方言包 |
-| **yaspy** | 最新版 | YashanDB Python 驱动 |
+| **SQLAlchemy** | 建议采用 2.0.50 | 2.0.0 之后版本可能兼容，未做测试 |
+| **yashandb-sqlalchemy** | 2.0.0 | YashanDB 方言包 |
+| **yaspy** | >=1.2.1 | YashanDB Python 驱动 |
 
-> **Python 版本建议**：SQLAlchemy 1.4.x 支持 Python 3.6 ~ 3.11。建议使用 **Python 3.9**。
+> **Python 版本建议**：SQLAlchemy 2.0.50 支持 Python 3.8+。建议使用 **Python 3.11**。
 
 ## 步骤概览
 
-1. 安装 SQLAlchemy 1.4.x
+1. 安装 SQLAlchemy
 2. 安装 yaspy 驱动
 3. 安装 yashandb-sqlalchemy
 4. 连接数据库
@@ -40,15 +42,15 @@ SQLAlchemy 1.4.x + yashandb-sqlalchemy + yaspy + YashanDB
 yashandb-sqlalchemy 是 SQLAlchemy 的方言扩展，需要先安装 SQLAlchemy 核心包：
 
 ```bash
-pip3 install "SQLAlchemy==1.4.5"
+pip3 install "SQLAlchemy==2.0.50"
 ```
 
 ## 第二步：检查前置依赖
 
-确保已安装 yaspy 驱动：
+确保已安装 yaspy 驱动（推荐 1.2.1 或更高版本）：
 
 ```bash
-pip3 install yaspy
+pip3 install yaspy==1.2.1
 ```
 
 如未安装，请先执行 `/yashandb-python` 安装 yaspy 驱动。
