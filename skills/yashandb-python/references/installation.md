@@ -43,29 +43,14 @@ sudo yum install python3 python3-pip
 
 ## 安装 Python 驱动
 
-**yaspy 和 yasdb 不在 PyPI 上**，需要从以下渠道获取：
-
-1. **YashanDB 下载中心**：https://download.yashandb.com
-2. **本地 wheel 文件**（如果有）
-
-### 从本地文件安装
+推荐从 PyPI 直接安装 **yaspy**（YashanDB Python 驱动）：
 
 ```bash
-# 假设驱动文件在 ./scripts/ 目录下
-pip install ./scripts/yasdb-1.2.0-py3-none-any.whl
-```
+# 安装最新版本
+pip install yaspy
 
-### 从下载中心安装
-
-从 YashanDB 下载中心获取对应的 whl 文件：
-- **Windows**: `yaspy-xx.xx-cp38-cp38-win_amd64.whl` 或 `yasdb-xx.xx-py3-none-any.whl`
-- **Linux x86_64**: `yaspy-xx.xx-cp36-cp36m-linux_x86_64.whl`
-- **Linux aarch64**: `yaspy-xx.xx-cp36-cp36m-linux_aarch64.whl`
-
-安装命令：
-
-```bash
-pip install yaspy-xx.xx-cp38-cp38-win_amd64.whl
+# 安装推荐版本 1.2.1
+pip install yaspy==1.2.1
 ```
 
 ### 驱动信息
@@ -74,6 +59,7 @@ pip install yaspy-xx.xx-cp38-cp38-win_amd64.whl
 |------|-----|
 | 推荐包名 | yaspy |
 | 替代包名 | yasdb |
+| 推荐版本 | 1.2.1 |
 | Python 版本要求 | 3.6.0 及以上 |
 | DB-API 版本 | 2.0 |
 | 线程安全级别 | 2 |

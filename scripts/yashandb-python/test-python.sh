@@ -14,12 +14,12 @@ test_python_installed() {
     print_status "测试 1: 检查 Python 安装..."
 
     if command_exists python3; then
-        PYTHON版本=$(python3 --version)
-        print_success "Python 已安装: $PYTHON版本"
+        PYTHON_VERSION=$(python3 --version)
+        print_success "Python 已安装: $PYTHON_VERSION"
         return 0
     elif command_exists python; then
-        PYTHON版本=$(python --version)
-        print_success "Python 已安装: $PYTHON版本"
+        PYTHON_VERSION=$(python --version)
+        print_success "Python 已安装: $PYTHON_VERSION"
         return 0
     else
         print_error "Python 未安装"
@@ -36,11 +36,21 @@ test_python_driver() {
         PYTHON_CMD="python"
     fi
 
-    if $PYTHON_CMD -c "import yasdb" 2>/dev/null; then
-        print_success "yasdb 模块已安装"
+    if $PYTHON_CMD -c "import yaspy" 2>/dev/null; then
+        YASPY_VERSION=$($PYTHON_CMD -m pip show yaspy 2>/dev/null | grep "^Version:" | awk '{print $2}')
+        if [ -n "$YASPY_VERSION" ]; then
+            print_success "yaspy 模块已安装: $YASPY_VERSION"
+        else
+            print_success "yaspy 模块已安装"
+        fi
         return 0
-    elif $PYTHON_CMD -c "import yaspy" 2>/dev/null; then
-        print_success "yaspy 模块已安装"
+    elif $PYTHON_CMD -c "import yasdb" 2>/dev/null; then
+        YASDB_VERSION=$($PYTHON_CMD -m pip show yasdb 2>/dev/null | grep "^Version:" | awk '{print $2}')
+        if [ -n "$YASDB_VERSION" ]; then
+            print_success "yasdb 模块已安装: $YASDB_VERSION"
+        else
+            print_success "yasdb 模块已安装"
+        fi
         return 0
     else
         print_warning "Python 驱动 (yasdb/yaspy) 未安装"
@@ -78,26 +88,26 @@ test_c_driver() {
 echo "正在运行测试..."
 echo ""
 
-通过=0
-失败=0
+passed=0
+failed=0
 
-if test_python_installed; then ((通过++)); else ((失败++)); fi
+if test_python_installed; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_python_driver; then ((通过++)); else ((失败++)); fi
+if test_python_driver; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_c_driver; then ((通过++)); else ((失败++)); fi
+if test_c_driver; then ((passed++)); else ((failed++)); fi
 echo ""
 
 echo "========================================="
 echo "测试摘要"
 echo "========================================="
-echo "通过: $通过"
-echo "失败: $失败"
+echo "passed: $passed"
+echo "failed: $failed"
 echo ""
 
-if [ $失败 -eq 0 ]; then
+if [ $failed -eq 0 ]; then
     print_success "所有测试通过！"
     exit 0
 else

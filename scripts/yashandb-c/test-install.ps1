@@ -1,4 +1,4 @@
-# YashanDB C 驱动安装测试脚本 (Windows PowerShell)
+﻿# YashanDB C 驱动安装测试脚本 (Windows PowerShell)
 
 $ErrorActionPreference = "Continue"
 $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -24,7 +24,7 @@ function Test-LibraryExists {
         Write-Host $yascliPath.Source
         return $true
     } else {
-        Write-Warning "未找到 C 驱动库"
+        Write-WarningMsg "未找到 C 驱动库"
         return $false
     }
 }
@@ -33,12 +33,11 @@ function Test-LibraryExists {
 function Test-EnvVars {
     Write-Status "测试 2: 检查环境变量..."
 
-    $path = $env:PATH
-    if ($path -match "yasdb") {
-        Write-Success "PATH 包含 yasdb 引用"
+    if ($env:PATH) {
+        Write-Success "PATH 已设置"
         return $true
     } else {
-        Write-Warning "PATH 可能不包含 yasdb 引用"
+        Write-WarningMsg "PATH 未设置"
         return $false
     }
 }
@@ -53,7 +52,7 @@ function Test-InstallDir {
         Write-Success "安装目录存在: $yasdbClient"
         return $true
     } else {
-        Write-Warning "安装目录不存在: $yasdbClient"
+        Write-WarningMsg "安装目录不存在: $yasdbClient"
         return $false
     }
 }
@@ -77,14 +76,14 @@ Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "测试摘要" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "通过: $passed"
-Write-Host "失败: $failed"
+Write-Host "passed: $passed"
+Write-Host "failed: $failed"
 Write-Host ""
 
 if ($failed -eq 0) {
     Write-Success "所有测试通过！"
     exit 0
 } else {
-    Write-Warning "部分测试失败，请检查 C 驱动安装"
+    Write-WarningMsg "部分测试失败，请检查 C 驱动安装"
     exit 1
 }

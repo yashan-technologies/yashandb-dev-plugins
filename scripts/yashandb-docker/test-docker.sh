@@ -4,14 +4,14 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../common/detect-platform.sh"
 
-操作系统=$(detect_os)
-架构=$(detect_arch)
+OS=$(detect_os)
+ARCH=$(detect_arch)
 
 echo "========================================="
 echo "YashanDB Docker 部署测试"
 echo "========================================="
-echo "操作系统: $操作系统"
-echo "架构: $架构"
+echo "操作系统: $OS"
+echo "架构: $ARCH"
 echo ""
 
 # 测试 1: 检查 Docker 安装
@@ -45,21 +45,21 @@ test_docker_daemon() {
 test_platform_support() {
     print_status "测试 3: 检查平台支持..."
 
-    case "$操作系统" in
+    case "$OS" in
         linux)
-            case "$架构" in
+            case "$ARCH" in
                 x86_64|aarch64)
-                    print_success "平台支持: $操作系统-$架构"
+                    print_success "平台支持: $OS-$ARCH"
                     return 0
                     ;;
                 *)
-                    print_error "不支持的平台: $操作系统-$架构"
+                    print_error "不支持的平台: $OS-$ARCH"
                     return 1
                     ;;
             esac
             ;;
         *)
-            print_error "Docker 部署需要 Linux，当前: $操作系统"
+            print_error "Docker 部署需要 Linux，当前: $OS"
             return 1
             ;;
     esac
@@ -69,12 +69,12 @@ test_platform_support() {
 test_disk_space() {
     print_status "测试 4: 检查可用磁盘空间..."
 
-    可用空间=$(df -BG . 2>/dev/null | tail -1 | awk '{print $4}' | sed 's/G//')
-    if [ "$可用空间" -ge 5 ]; then
-        print_success "磁盘空间充足: ${可用空间}GB"
+    DISK_SPACE=$(df -BG . 2>/dev/null | tail -1 | awk '{print $4}' | sed 's/G//')
+    if [ "$DISK_SPACE" -ge 5 ]; then
+        print_success "磁盘空间充足: ${DISK_SPACE}GB"
         return 0
     else
-        print_warning "磁盘空间不足: ${可用空间}GB (建议: 5GB+)"
+        print_warning "磁盘空间不足: ${DISK_SPACE}GB (建议: 5GB+)"
         return 1
     fi
 }
@@ -96,19 +96,19 @@ test_docker_hub() {
 echo "正在运行测试..."
 echo ""
 
-通过=0
-失败=0
+passed=0
+failed=0
 
-if test_docker_installed; then ((通过++)); else ((失败++)); fi
+if test_docker_installed; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_docker_daemon; then ((通过++)); else ((失败++)); fi
+if test_docker_daemon; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_platform_support; then ((通过++)); else ((失败++)); fi
+if test_platform_support; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_disk_space; then ((通过++)); else ((失败++)); fi
+if test_disk_space; then ((passed++)); else ((failed++)); fi
 echo ""
 
 # Docker Hub 连接测试（可选，不计入失败）
@@ -118,11 +118,11 @@ echo ""
 echo "========================================="
 echo "测试摘要"
 echo "========================================="
-echo "通过: $通过"
-echo "失败: $失败"
+echo "passed: $passed"
+echo "failed: $failed"
 echo ""
 
-if [ $失败 -eq 0 ]; then
+if [ $failed -eq 0 ]; then
     print_success "所有测试通过！"
     echo ""
     echo "下一步：执行部署脚本"

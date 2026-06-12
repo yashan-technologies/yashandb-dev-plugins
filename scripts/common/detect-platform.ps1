@@ -1,12 +1,16 @@
-# 平台检测工具 - Windows PowerShell 版本
+﻿# 平台检测工具 - Windows PowerShell 版本
 
-# 检测操作系统
+# 检测操作系统（兼容 Windows PowerShell 5.1）
 function Detect-OS {
-    if ($IsWindows) {
-        return "windows"
-    } elseif ($IsMacOS) {
-        return "macos"
-    } elseif ($IsLinux) {
+    if ($PSVersionTable.PSVersion.Major -ge 6) {
+        if ($IsWindows) { return "windows" }
+        if ($IsMacOS) { return "macos" }
+        if ($IsLinux) { return "linux" }
+    }
+    if ($env:OS -eq "Windows_NT") { return "windows" }
+    $platform = [System.Environment]::OSVersion.Platform
+    if ($platform -eq [System.PlatformID]::Unix) {
+        if ($env:OSTYPE -match "darwin") { return "macos" }
         return "linux"
     }
     return "unknown"
@@ -61,4 +65,4 @@ function Exit-WithError {
     param([string]$Message)
     Write-ErrorMsg $Message
     exit 1
-}
+}

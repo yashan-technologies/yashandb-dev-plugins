@@ -4,21 +4,21 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../common/detect-platform.sh"
 
-操作系统=$(detect_os)
-架构=$(detect_arch)
+OS=$(detect_os)
+ARCH=$(detect_arch)
 
 echo "========================================="
 echo "YashanDB C 驱动安装测试"
 echo "========================================="
-echo "操作系统: $操作系统"
-echo "架构: $架构"
+echo "操作系统: $OS"
+echo "架构: $ARCH"
 echo ""
 
 # 测试 1: 检查 C 驱动库是否存在
 test_library_exists() {
     print_status "测试 1: 检查 C 驱动库..."
 
-    case "$操作系统" in
+    case "$OS" in
         linux|macos)
             if ldconfig -p 2>/dev/null | grep -q "libyascli"; then
                 print_success "找到 C 驱动库"
@@ -46,7 +46,7 @@ test_library_exists() {
 test_env_vars() {
     print_status "测试 2: 检查环境变量..."
 
-    case "$操作系统" in
+    case "$OS" in
         linux|macos)
             if [ -n "$LD_LIBRARY_PATH" ]; then
                 print_success "LD_LIBRARY_PATH 已设置: $LD_LIBRARY_PATH"
@@ -72,7 +72,7 @@ test_env_vars() {
 test_install_dir() {
     print_status "测试 3: 检查安装目录..."
 
-    case "$操作系统" in
+    case "$OS" in
         linux|macos)
             YASDB_CLIENT="${YASDB_CLIENT:-$HOME/yasdb_client}"
             ;;
@@ -94,26 +94,26 @@ test_install_dir() {
 echo "正在运行测试..."
 echo ""
 
-通过=0
-失败=0
+passed=0
+failed=0
 
-if test_library_exists; then ((通过++)); else ((失败++)); fi
+if test_library_exists; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_env_vars; then ((通过++)); else ((失败++)); fi
+if test_env_vars; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_install_dir; then ((通过++)); else ((失败++)); fi
+if test_install_dir; then ((passed++)); else ((failed++)); fi
 echo ""
 
 echo "========================================="
 echo "测试摘要"
 echo "========================================="
-echo "通过: $通过"
-echo "失败: $失败"
+echo "passed: $passed"
+echo "failed: $failed"
 echo ""
 
-if [ $失败 -eq 0 ]; then
+if [ $failed -eq 0 ]; then
     print_success "所有测试通过！"
     exit 0
 else

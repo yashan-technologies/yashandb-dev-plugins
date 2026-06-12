@@ -1,4 +1,4 @@
-# YashanDB GORM 测试脚本 (Windows PowerShell)
+﻿# YashanDB GORM 测试脚本 (Windows PowerShell)
 
 $ErrorActionPreference = "Continue"
 $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -37,7 +37,7 @@ function Test-GoDriver {
             return $false
         }
     } else {
-        Write-Warning "无法检查 - Go 未安装"
+        Write-WarningMsg "无法检查 - Go 未安装"
         return $false
     }
 }
@@ -56,7 +56,7 @@ function Test-GormAdapter {
             return $false
         }
     } else {
-        Write-Warning "无法检查 - Go 未安装"
+        Write-WarningMsg "无法检查 - Go 未安装"
         return $false
     }
 }
@@ -97,14 +97,14 @@ Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "测试摘要" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "通过: $passed"
-Write-Host "失败: $failed"
+Write-Host "passed: $passed"
+Write-Host "failed: $failed"
 Write-Host ""
 
 if ($failed -eq 0) {
     Write-Success "所有测试通过！"
     exit 0
 } else {
-    Write-Warning "部分测试失败"
+    Write-WarningMsg "部分测试失败"
     exit 1
 }

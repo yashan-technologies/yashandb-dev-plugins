@@ -1,4 +1,4 @@
-# YashanDB Docker 部署测试脚本 (Windows PowerShell)
+﻿# YashanDB Docker 部署测试脚本 (Windows PowerShell)
 
 $ErrorActionPreference = "Continue"
 $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -32,6 +32,11 @@ function Test-DockerInstalled {
 function Test-DockerDaemon {
     Write-Status "测试 2: 检查 Docker 守护进程..."
 
+    if (-not (Test-Command docker)) {
+        Write-ErrorMsg "Docker 未安装"
+        return $false
+    }
+
     $result = docker ps 2>$null
     if ($LASTEXITCODE -eq 0) {
         Write-Success "Docker 守护进程正在运行"
@@ -54,7 +59,7 @@ function Test-PlatformSupport {
             Write-Success "WSL2 可用于 Docker"
             return $true
         } else {
-            Write-Warning "Windows 上的 Docker 需要 WSL2"
+            Write-WarningMsg "Windows 上的 Docker 需要 WSL2"
             return $false
         }
     } elseif ($OS -eq "linux") {
@@ -82,7 +87,7 @@ function Test-DiskSpace {
         Write-Success "磁盘空间充足: ${availableGB}GB"
         return $true
     } else {
-        Write-Warning "磁盘空间不足: ${availableGB}GB (建议: 5GB+)"
+        Write-WarningMsg "磁盘空间不足: ${availableGB}GB (建议: 5GB+)"
         return $false
     }
 }
@@ -91,6 +96,11 @@ function Test-DiskSpace {
 function Test-DockerHub {
     Write-Status "测试 5: 检查 Docker Hub 连接..."
 
+    if (-not (Test-Command docker)) {
+        Write-WarningMsg "Docker 未安装，跳过 Hub 连接测试"
+        return $false
+    }
+
     $result = docker pull hello-world 2>$null
     if ($LASTEXITCODE -eq 0) {
         Write-Success "Docker Hub 连接正常"
@@ -98,7 +108,7 @@ function Test-DockerHub {
         docker rmi hello-world >$null 2>&1
         return $true
     } else {
-        Write-Warning "无法连接 Docker Hub，将使用离线导入方式"
+        Write-WarningMsg "无法连接 Docker Hub，将使用离线导入方式"
         return $false
     }
 }
@@ -129,8 +139,8 @@ Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "测试摘要" -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "通过: $passed"
-Write-Host "失败: $failed"
+Write-Host "passed: $passed"
+Write-Host "failed: $failed"
 Write-Host ""
 
 if ($failed -eq 0) {
@@ -140,6 +150,6 @@ if ($failed -eq 0) {
     Write-Host '  powershell -File scripts\yashandb-docker\deploy-yashandb.ps1' -ForegroundColor Gray
     exit 0
 } else {
-    Write-Warning "部分测试失败"
+    Write-WarningMsg "部分测试失败"
     exit 1
 }

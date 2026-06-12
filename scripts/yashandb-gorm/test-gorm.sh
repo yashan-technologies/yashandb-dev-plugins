@@ -14,8 +14,8 @@ test_go_installed() {
     print_status "测试 1: 检查 Go 安装..."
 
     if command_exists go; then
-        GO版本=$(go version)
-        print_success "Go 已安装: $GO版本"
+        GO_VERSION=$(go version)
+        print_success "Go 已安装: $GO_VERSION"
         return 0
     else
         print_error "Go 未安装"
@@ -89,29 +89,29 @@ test_c_driver() {
 echo "正在运行测试..."
 echo ""
 
-通过=0
-失败=0
+passed=0
+failed=0
 
-if test_go_installed; then ((通过++)); else ((失败++)); fi
+if test_go_installed; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_go_driver; then ((通过++)); else ((失败++)); fi
+if test_go_driver; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_gorm_adapter; then ((通过++)); else ((失败++)); fi
+if test_gorm_adapter; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_c_driver; then ((通过++)); else ((失败++)); fi
+if test_c_driver; then ((passed++)); else ((failed++)); fi
 echo ""
 
 echo "========================================="
 echo "测试摘要"
 echo "========================================="
-echo "通过: $通过"
-echo "失败: $失败"
+echo "passed: $passed"
+echo "failed: $failed"
 echo ""
 
-if [ $失败 -eq 0 ]; then
+if [ $failed -eq 0 ]; then
     print_success "所有测试通过！"
     exit 0
 else

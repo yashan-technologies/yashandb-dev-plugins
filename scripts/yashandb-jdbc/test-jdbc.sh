@@ -59,26 +59,26 @@ test_build_tool() {
 echo "正在运行测试..."
 echo ""
 
-通过=0
-失败=0
+passed=0
+failed=0
 
-if test_java_installed; then ((通过++)); else ((失败++)); fi
+if test_java_installed; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_javac_installed; then ((通过++)); else ((失败++)); fi
+if test_javac_installed; then ((passed++)); else ((failed++)); fi
 echo ""
 
-if test_build_tool; then ((通过++)); else ((失败++)); fi
+if test_build_tool; then ((passed++)); else ((failed++)); fi
 echo ""
 
 echo "========================================="
 echo "测试摘要"
 echo "========================================="
-echo "通过: $通过"
-echo "失败: $失败"
+echo "passed: $passed"
+echo "failed: $failed"
 echo ""
 
-if [ $失败 -eq 0 ]; then
+if [ $failed -eq 0 ]; then
     print_success "所有测试通过！"
     exit 0
 else

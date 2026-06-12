@@ -36,16 +36,16 @@ test_sqlalchemy_installed() {
         PYTHON_CMD="python"
     fi
 
-    # 检查 SQLAlchemy 1.4.x
+    # 检查 SQLAlchemy 2.0.x
     SQLALCHEMY_VERSION=$($PYTHON_CMD -c "import sqlalchemy; print(sqlalchemy.__version__)" 2>/dev/null)
 
     if [ -n "$SQLALCHEMY_VERSION" ]; then
-        # 检查版本是否为 1.4.x
-        if [[ "$SQLALCHEMY_VERSION" == 1.4* ]]; then
+        # 检查版本是否为 2.0.x
+        if [[ "$SQLALCHEMY_VERSION" == 2.0* ]]; then
             print_success "SQLAlchemy 已安装: $SQLALCHEMY_VERSION"
             return 0
         else
-            print_warning "SQLAlchemy 版本: $SQLALCHEMY_VERSION (需要 1.4.x)"
+            print_warning "SQLAlchemy 版本: $SQLALCHEMY_VERSION (建议采用 2.0.50)"
             return 1
         fi
     else
@@ -64,7 +64,13 @@ test_yaspy_driver() {
     fi
 
     if $PYTHON_CMD -c "import yaspy" 2>/dev/null; then
-        print_success "yaspy 模块已安装"
+        # 通过 pip 查看版本
+        YASPY_VERSION=$($PYTHON_CMD -m pip show yaspy 2>/dev/null | grep "^Version:" | awk '{print $2}')
+        if [ -n "$YASPY_VERSION" ]; then
+            print_success "yaspy 模块已安装: $YASPY_VERSION"
+        else
+            print_success "yaspy 模块已安装"
+        fi
         return 0
     else
         print_error "yaspy 模块未安装"
@@ -82,7 +88,13 @@ test_yashandb_sqlalchemy() {
     fi
 
     if $PYTHON_CMD -c "import yashandb_sqlalchemy" 2>/dev/null; then
-        print_success "yashandb-sqlalchemy 模块已安装"
+        # 通过 pip 查看版本
+        YASHANDB_SQLALCHEMY_VERSION=$($PYTHON_CMD -m pip show yashandb-sqlalchemy 2>/dev/null | grep "^Version:" | awk '{print $2}')
+        if [ -n "$YASHANDB_SQLALCHEMY_VERSION" ]; then
+            print_success "yashandb-sqlalchemy 模块已安装: $YASHANDB_SQLALCHEMY_VERSION"
+        else
+            print_success "yashandb-sqlalchemy 模块已安装"
+        fi
         return 0
     else
         print_error "yashandb-sqlalchemy 模块未安装"

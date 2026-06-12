@@ -1,4 +1,4 @@
-# YashanDB Docker 部署脚本 (Windows PowerShell)
+﻿# YashanDB Docker 部署脚本 (Windows PowerShell)
 
 param(
     [int]$PORT = 1688,
@@ -7,6 +7,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
+. "$SCRIPT_DIR\..\common\detect-platform.ps1"
+
 $IMAGE_NAME = "docker.1ms.run/yasdb/yashandb:23.4.7.100"
 $HOME_DIR = $env:USERPROFILE
 
@@ -103,4 +106,4 @@ Write-Host "  - 连接数据库: docker exec -it $CLUSTER yasql sys/$PASSWORD"
 Write-Host "  - 停止容器: docker stop $CLUSTER"
 Write-Host "  - 启动容器: docker start $CLUSTER"
 Write-Host ""
-Write-Host "重要: 首次登录后请立即修改默认密码 '$PASSWORD'！" -ForegroundColor Yellow
+Write-Host "重要: 首次登录后请立即修改默认密码 '$PASSWORD'！" -ForegroundColor Yellow

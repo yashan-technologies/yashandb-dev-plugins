@@ -54,13 +54,16 @@ Test-Path "$env:USERPROFILE\.yashandb\client\lib\yascli.dll"
 
 ## 第二步：安装 Python 驱动
 
-**yaspy 和 yasdb 不在 PyPI 上**，需要从 YashanDB 下载中心获取：
-https://download.yashandb.com
-
-根据平台选择对应的 whl 文件安装：
+推荐使用 **yaspy**，可从 PyPI 直接安装：
 
 ```bash
-pip install yaspy-xx.xx-cp38-cp38-win_amd64.whl
+pip install yaspy
+```
+
+如需指定版本（推荐 1.2.1）：
+
+```bash
+pip install yaspy==1.2.1
 ```
 
 ### 驱动信息
@@ -68,6 +71,7 @@ pip install yaspy-xx.xx-cp38-cp38-win_amd64.whl
 | 属性 | 值 |
 |------|-----|
 | 推荐包名 | yaspy |
+| 推荐版本 | 1.2.1 |
 | Python 版本要求 | 3.6.0 及以上 |
 | 默认端口 | 1688 |
 | 连接池支持 | 仅 yaspy 支持 |
